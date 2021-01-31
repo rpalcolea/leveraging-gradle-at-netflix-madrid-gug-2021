@@ -1,0 +1,12 @@
+plugins {
+    id 'groovy'
+}
+
+repositories {
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+dependencies {
+    implementation "com.netflix.nebula:gradle-lint-plugin:16.17.0"
+}
