@@ -1,0 +1,39 @@
+{
+  "replace": [
+    {
+      "module" : "javax.persistence:javax.persistence-api",
+      "with"   : "jakarta.persistence:jakarta.persistence-api",
+      "reason" : "Java Persistence API (JPA), in 2019 renamed to Jakarta Persistence",
+      "author" : "Roberto Perez Alcolea",
+      "date": "2021-02-02T00:00:00.000Z"
+    }
+  ],
+  "substitute": [
+    {
+      "module": "com.google.guava:guava:(,30.0-jre]",
+      "with": "com.google.guava:guava:30.1-jre",
+      "reason" : "I don't know why you want to use guava but you should use the latest",
+      "author" : "Roberto Perez Alcolea",
+      "date": "2021-02-02T00:00:00.000Z"
+    }
+  ],
+  "deny": [
+    {
+      "module": "bouncycastle:bcmail-jdk15",
+      "reason": "The bouncycastle group is not official. Configure an org.bouncycastle dependency - http://bouncy-castle.1462172.n4.nabble.com/inconsistent-pom-file-relocation-td4657368.html",
+      "author" : "Roberto Perez Alcolea",
+      "date": "2021-02-02T00:00:00.000Z"
+    }
+  ],
+  "align": [
+    {
+      "name": "align-aws-java-sdk",
+      "group": "com.amazonaws",
+      "includes": ["aws-java-sdk", "aws-java-sdk-.*"],
+      "excludes": ["aws-java-sdk-(handwritten-samples|sample-extractor|samples-pom|generated-samples|samples|archetype|swf-libraries)"],
+      "reason": "Align AWS Java SDK libraries",
+      "author" : "Roberto Perez Alcolea",
+      "date": "2021-02-02T00:00:00.000Z"
+    }
+  ]
+}
