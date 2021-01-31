@@ -1,0 +1,28 @@
+import groovy.transform.CompileStatic
+
+initscript {
+    logger.log(LogLevel.LIFECYCLE, "You are using a custom gradle distribution for your company")
+}
+
+apply plugin: BuildEnvironmentInitPlugin
+
+
+@CompileStatic
+class BuildEnvironmentInitPlugin implements Plugin<Gradle> {
+    /**
+     * Add default buildscript classpath dependencies
+     * @param gradle
+     */
+    @Override
+    void apply(Gradle gradle) {
+        gradle.rootProject { rootProject ->
+            rootProject.buildscript.repositories { RepositoryHandler repositories  ->
+                 repositories.mavenCentral()
+            }
+            rootProject.buildscript.dependencies { DependencyHandler dependencyHandler ->
+                dependencyHandler.add('classpath', "com.netflix.nebula:nebula-publishing-plugin:latest.release")
+                dependencyHandler.add('classpath', "com.netflix.nebula:gradle-lint-plugin:latest.release")
+            }
+        }
+    }
+}

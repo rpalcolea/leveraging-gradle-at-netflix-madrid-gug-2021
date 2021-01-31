@@ -1,0 +1,107 @@
+import netflix.DistMavenPublishPlugin
+
+plugins {
+    id "base"
+    id "nebula.maven-publish"
+}
+
+apply plugin: DistMavenPublishPlugin
+
+group = 'netflix.test'
+version = '1.0.0'
+
+def types = ['all', 'bin']
+
+types.each { type ->
+    def taskType = type.capitalize()
+    def downloadTaskName = "downloadGradle$taskType"
+    DownloadGradle downloadGradle = task(downloadTaskName, type: DownloadGradle) {
+        description "Download Gradle version ($gradleVersion) from Gradle distributions website"
+        gradleVersion gradle.gradleVersion
+        destinationDir = file("$buildDir/gradle-downloads")
+        if (gradle.gradleVersion.endsWith('+0000')) {
+            gradleDownloadBase += '-snapshots'
+        }
+        distType = type
+    }
+
+    def unzipTaskName = "unzipGradle$taskType"
+    Copy unzip = task(unzipTaskName, type: Copy, dependsOn: downloadTaskName) {
+        description 'Expand Gradle Distribution for jar changes'
+        from zipTree(downloadGradle.destinationFile)
+        into "build/$unzipTaskName"
+    }
+
+    def zipTaskName = "zipDist$taskType"
+    def zipDist = task(zipTaskName, type: Zip, dependsOn: unzipTaskName) {
+        description 'Add extra files to My Company Gradle distribution'
+        archiveBaseName.set 'my-company-gradle-distribution'
+        archiveClassifier.set type
+        from unzip.destinationDir
+        into(downloadGradle.distributionNameBase) {
+            /**
+             * Add init.d scripts
+             * More info https://docs.gradle.org/current/userguide/init_scripts.html#sec:using_an_init_script
+             */
+            into('init.d') {
+                from file('init.d')
+            }
+            /**
+             * Custom gradle properties for a company
+             * More details in https://docs.gradle.org/5.5/release-notes.html#define-organization-wide-properties-with-a-custom-gradle-distribution
+             */
+            from file('defaults/gradle.properties')
+        }
+    }
+
+    artifacts {
+        archives zipDist
+    }
+
+    publishing {
+        publications {
+            nebula(MavenPublication) {
+                artifactId 'my-company-gradle-distribution'
+                artifacts += zipDist
+            }
+        }
+    }
+}
+
+class DownloadGradle extends DefaultTask {
+    @Input
+    String gradleVersion
+
+    @Input
+    File destinationDir
+
+    @Input
+    String gradleDownloadBase = 'https://services.gradle.org/distributions'
+
+    @Input
+    String distType = 'all'
+
+    @TaskAction
+    doDownloadGradle() {
+        destinationFile.withOutputStream { stream ->
+            stream << new URL(downloadUrl).openStream()
+        }
+    }
+
+    String getDownloadUrl() {
+        "$gradleDownloadBase/$downloadFileName"
+    }
+
+    String getDistributionNameBase() {
+        "gradle-$gradleVersion"
+    }
+
+    String getDownloadFileName() {
+        "$distributionNameBase-${distType}.zip"
+    }
+
+    @OutputFile
+    File getDestinationFile() {
+        new File(destinationDir, downloadFileName)
+    }
+}
