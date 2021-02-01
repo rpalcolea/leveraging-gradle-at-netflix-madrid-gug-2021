@@ -1,0 +1,9 @@
+import nebula.dependencycache.builder.BomAnalyzerPlugin
+
+apply plugin: 'java'
+apply plugin: BomAnalyzerPlugin
+apply plugin: 'nebula.dependency-recommender'
+
+dependencyRecommendations {
+    mavenBom module: "com.amazonaws:aws-java-sdk-bom:1.11.946"
+}

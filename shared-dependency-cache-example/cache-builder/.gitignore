@@ -1,0 +1,34 @@
+# Build output
+distMaven
+out
+subprojects/distribution/wrapper
+
+# IntelliJ
+.idea
+*.iml
+*.ipr
+*.iws
+classes/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Gradle cache
+.gradle/
+.gradle-test-worker-*
+
+# Gradle workspace tmp on Jenkins
+.gradle.tmp/
+
+# Side-effect of tests
+subprojects/core/native/
+userHome/
+
+!.java-version
+
+.DS_Store
+
+
+generated-shared-dependency-cache/

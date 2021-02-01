@@ -1,0 +1,19 @@
+import nebula.dependencycache.builder.NebulaDependencyCacheBuilderPlugin
+buildscript {
+    repositories { jcenter() }
+
+    dependencies {
+        classpath 'com.netflix.nebula:nebula-dependency-recommender:9.1.1'
+    }
+}
+
+subprojects {
+    repositories {
+        jcenter()
+    }
+    apply plugin: 'java'
+}
+
+apply plugin: NebulaDependencyCacheBuilderPlugin
+
+version = '1.0.0'

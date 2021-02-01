@@ -21,3 +21,8 @@ Shows how to publish to maven repositories, including metadata from the build en
 ## resolution-rules-plugin-examples
 
 Shows how to use the resolution-rules plugin to modify the dependency graph without the need for users to represent these rules with Gradle API on each project
+
+
+## shared-dependency-cache-example
+
+Shows how to create and consume a shared read-only dependency cache
