@@ -1,0 +1,11 @@
+
+
+rootProject.name = 'build-cache-example'
+
+buildCache {
+    local {
+        directory = new File(rootDir, 'build-cache')
+        push = true
+        enabled = true
+    }
+}

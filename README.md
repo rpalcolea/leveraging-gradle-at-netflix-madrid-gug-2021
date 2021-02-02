@@ -26,3 +26,7 @@ Shows how to use the resolution-rules plugin to modify the dependency graph with
 ## shared-dependency-cache-example
 
 Shows how to create and consume a shared read-only dependency cache
+
+## dependency-locking-example
+
+Quick example on using locking funcionality in gradle

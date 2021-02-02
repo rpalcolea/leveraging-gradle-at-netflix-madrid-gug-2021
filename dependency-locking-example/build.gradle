@@ -1,0 +1,20 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api platform('com.fasterxml.jackson:jackson-bom:2.9.8')
+    //api platform('com.fasterxml.jackson:jackson-bom:2.12.1')
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
+}
+
+dependencyLocking {
+    lockAllConfigurations()
+}
+
